@@ -1,0 +1,25 @@
+# Virtual environment
+venv/
+.env/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Database
+users.db
+
+# Logs
+*.log
+access.log
+
+# Chroma vector DB
+chroma_db/
+
+# Processed data
+data/processed/
+
+# OS files
+.DS_Store
+Thumbs.db
