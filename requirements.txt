@@ -3,10 +3,6 @@ uvicorn
 
 streamlit
 
-torch
-transformers
-sentencepiece
-
 chromadb
 sentence-transformers
 
@@ -19,5 +15,6 @@ requests
 python-jose
 passlib[bcrypt]
 bcrypt==4.0.1
-
 python-multipart
+
+groq

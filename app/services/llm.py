@@ -1,44 +1,24 @@
-from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
-import torch
+import os
+from groq import Groq
 
-# MODEL_NAME = "google/flan-t5-base"
-MODEL_NAME = "google/flan-t5-small"
-
-tokenizer = None
-model = None
-
-
-def load_model():
-    global tokenizer, model
-
-    if tokenizer is None or model is None:
-        print("Loading FLAN-T5 model...")
-        tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
-        model = AutoModelForSeq2SeqLM.from_pretrained(MODEL_NAME)
-
-    return tokenizer, model
+# Initialize Groq client using environment variable
+client = Groq(
+    api_key=os.getenv("GROQ_API_KEY")
+)
 
 
 def generate_answer(prompt: str):
-    tokenizer, model = load_model()
+    try:
+        completion = client.chat.completions.create(
+            model="llama3-8b-8192",
+            messages=[
+                {"role": "user", "content": prompt}
+            ],
+            temperature=0.2,
+            max_tokens=300
+        )
 
-    inputs = tokenizer(
-        prompt,
-        return_tensors="pt",
-        truncation=True,
-        # max_length=2048
-        max_length=1024
-    )
+        return completion.choices[0].message.content.strip()
 
-    outputs = model.generate(
-        **inputs,
-        max_new_tokens=256,
-        do_sample=False
-    )
-
-    answer = tokenizer.decode(
-        outputs[0],
-        skip_special_tokens=True
-    ).strip()
-
-    return answer if answer else "I don't know"
+    except Exception:
+        return "I don't know"
