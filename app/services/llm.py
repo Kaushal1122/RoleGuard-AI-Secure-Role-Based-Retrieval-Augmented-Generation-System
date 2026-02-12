@@ -1,7 +1,8 @@
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 import torch
 
-MODEL_NAME = "google/flan-t5-base"
+# MODEL_NAME = "google/flan-t5-base"
+MODEL_NAME = "google/flan-t5-small"
 
 tokenizer = None
 model = None
@@ -25,7 +26,8 @@ def generate_answer(prompt: str):
         prompt,
         return_tensors="pt",
         truncation=True,
-        max_length=2048
+        # max_length=2048
+        max_length=1024
     )
 
     outputs = model.generate(
